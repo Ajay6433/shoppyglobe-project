@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { FiShoppingCart } from 'react-icons/fi';
 
 function Header() {
   return (
@@ -15,8 +16,9 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link to="/cart" className="hover:text-blue-600 transition-colors">
-                Cart
+              <Link to="/cart" className="flex items-center gap-1 hover:text-blue-600 transition-colors">
+                <FiShoppingCart className="text-lg" />
+                <span>Cart</span>
               </Link>
             </li>
           </ul>

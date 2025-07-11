@@ -1,6 +1,7 @@
 import React from 'react'
 import Header from '../components/Header'
 import { Outlet } from 'react-router-dom'
+import Footer from '../components/Footer'
 
 function RootLayout() {
   return (
@@ -12,9 +13,7 @@ function RootLayout() {
                 <Outlet />
             </div>
         </main>
-        <footer className="bg-gray-800 text-white p-4 text-center">
-            <p className="text-sm">© 2023 My E-Commerce Store. All rights reserved.</p>
-        </footer>
+       <Footer/>
     </div>
   )
 }
