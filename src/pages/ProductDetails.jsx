@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Spinner from '../components/Spinner';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../store/cartSlice';
@@ -12,6 +12,7 @@ function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   
@@ -51,6 +52,14 @@ function ProductDetails() {
     console.log("Product added to cart:", product);
     dispatch(addItem(product));
   }
+
+  function handleBuyNow(product) {
+    toast.success(`Redirecting to checkout for ${product.title}`);
+    console.log("Buy Now clicked for product:", product);
+    dispatch(addItem(product));
+    // navigate to checkout page
+    navigate('/checkout'); // Uncomment this line if you have a checkout page
+  }
   
   return (
     <div className="container mx-auto p-4">
@@ -67,6 +76,9 @@ function ProductDetails() {
           onClick={()=> addToCart(product)}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
             Add to Cart
+          </button>
+          <button onClick={() => handleBuyNow(product)}>
+            Buy Now
           </button>
         </div>
       </div>
