@@ -1,0 +1,40 @@
+import axios from "axios";
+import { useState, useEffect } from "react";
+function useProductsData() {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                setLoading(true);
+                setError(null); // Reseting error state before fetching
+                const response = await axios.get("https://dummyjson.com/products");
+                console.log(response.data.products);
+                if (response.status !== 200) {
+                    setError(
+                        `Error: ${response.status} - ${response.statusText}`
+                    )
+                }
+                setProducts(response.data.products);
+
+            } catch (err) {
+                console.error("Error fetching products:", err);
+                setError(
+                    err.response && err.response.data
+                        ? `Error: ${err.response.status} - ${err.response.data.message}`
+                        : "An unexpected error occurred"
+                );
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    return { products, loading, error };
+
+}
+export default useProductsData;
