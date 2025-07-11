@@ -1,51 +1,50 @@
-import React from 'react'
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { addItem } from '../store/cartSlice';
 import toast from 'react-hot-toast';
 
 function ProductItem({ product, loading, error }) {
-    const dispatch = useDispatch();
-    const addToCart = (product) => {
-        toast.success(`${product.title} added to cart!`);
-        dispatch(addItem(product));
-    };
+  const dispatch = useDispatch();
 
-    return (
-        <div >
-           <Link to={`product/${product.id}`} >
+  const addToCart = (product) => {
+    toast.success(`${product.title} added to cart!`);
+    dispatch(addItem(product));
+  };
 
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-            <div className="max-w-md w-full p-6">
-                {loading && <p className="text-blue-500 text-center">Loading...</p>}
-                {error && <p className="text-red-500 text-center">Error: {error}</p>}
-                {!loading && !error && product && (
-                    <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center transition-transform hover:scale-105 hover:shadow-2xl">
-                        <img
-                            src={product.thumbnail}
-                            alt={product.title}
-                            className="w-36 h-36 object-contain mb-4 rounded-md shadow"
-                        />
-                        <h2 className="text-xl font-semibold mb-2 text-center text-gray-900">{product.title}</h2>
-                        <p className="text-gray-600 mb-3 text-center line-clamp-2">{product.description}</p>
-                        <p className="text-white bg-green-600 px-4 py-1 rounded-full font-bold text-lg mt-auto shadow">
-                            ${product.price}
-                        </p>
-                        <button
-                            onClick={() => addToCart(product)}
-                            className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors"
-                        >
-                            Add to Cart
-                        </button>
-                    </div>
-                )}
-                {!loading && !error && !product && (
-                    <p className="text-center text-gray-500">No product available.</p>
-                )}
-            </div>
-        </div></Link>
-        </div>
-    )
+  if (loading) {
+    return <p className="text-blue-500 text-center py-8">Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="text-red-500 text-center py-8">Error: {error}</p>;
+  }
+
+  if (!product) {
+    return <p className="text-center text-gray-500 py-8">No product available.</p>;
+  }
+
+  return (
+    <div className="bg-white border rounded-md shadow-sm hover:shadow-md transition p-4 text-center">
+      <Link to={`/product/${product.id}`}>
+        <img
+          src={product.thumbnail}
+          alt={product.title}
+          className="w-full h-40 object-contain mb-3 rounded"
+        />
+        <h2 className="text-base font-medium text-gray-800 mb-1 truncate">{product.title}</h2>
+        <p className="text-sm text-gray-500 mb-2 line-clamp-2">{product.description}</p>
+        <p className="text-sm font-semibold text-gray-700 mb-3">₹{product.price}</p>
+      </Link>
+
+      <button
+        onClick={() => addToCart(product)}
+        className="w-full border border-gray-300 text-sm text-gray-700 rounded-md py-1.5 hover:bg-gray-50 transition"
+      >
+        Add to Cart
+      </button>
+    </div>
+  );
 }
 
-export default ProductItem
+export default ProductItem;

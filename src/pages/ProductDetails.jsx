@@ -1,7 +1,6 @@
-import React from 'react'
-
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import Spinner from '../components/Spinner';
 import { useDispatch } from 'react-redux';
 import { addItem } from '../store/cartSlice';
@@ -15,75 +14,91 @@ function ProductDetails() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`https://dummyjson.com/products/${id}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setProduct(data);
+        const response = await axios.get(`https://dummyjson.com/products/${id}`);
+        setProduct(response.data);
       } catch (err) {
         setError(err);
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchProduct();
   }, [id]);
 
-  if (loading) {
-    return <Spinner />;
-  }
-  
-  if (error) {
-    return <div className="text-red-500 text-center mt-4">Error: {error.message}</div>;
-  }
-  
-  if (!product) {
-    return <div className="text-center mt-4">Product not found.</div>;
-  }
-  function addToCart(product){
-    toast.success(`${product.title} is added to the cart`);
-    console.log("Product added to cart:", product);
+  const addToCart = (product) => {
+    toast.success(`${product.title} added to cart`);
     dispatch(addItem(product));
-  }
+  };
 
-  function handleBuyNow(product) {
+  const handleBuyNow = (product) => {
     toast.success(`Redirecting to checkout for ${product.title}`);
-    console.log("Buy Now clicked for product:", product);
     dispatch(addItem(product));
-    // navigate to checkout page
-    navigate('/checkout'); // Uncomment this line if you have a checkout page
-  }
-  
+    navigate('/checkout');
+  };
+
+  if (loading) return <Spinner />;
+  if (error) return <div className="text-center text-red-500 py-6">Error: {error.message}</div>;
+  if (!product) return <div className="text-center text-gray-600 py-6">Product not found.</div>;
+
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-col md:flex-row items-center">
+    <div className="max-w-6xl mx-auto px-4 py-10">
+      <div className="flex flex-col md:flex-row gap-10">
+        {/* Product Image */}
         <div className="md:w-1/2">
-          <img src={product.image} alt={product.title} className="w-full h-auto object-contain max-h-96" />
+          <img
+            src={product.thumbnail}
+            alt={product.title}
+            className="w-full h-80 object-contain border rounded shadow-sm"
+          />
         </div>
-        <div className="md:w-1/2 md:pl-8 mt-4 md:mt-0">
-          <h1 className="text-3xl font-bold mb-2">{product.title}</h1>
-          <p className="text-gray-700 text-xl mb-4">${product.price}</p>
-          <p className="text-gray-600 mb-4">{product.description}</p>
-          <p className="text-gray-500 text-sm">Category: {product.category}</p>
-          <button 
-          onClick={()=> addToCart(product)}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-            Add to Cart
-          </button>
-          <button onClick={() => handleBuyNow(product)}>
-            Buy Now
-          </button>
+
+        {/* Product Info */}
+        <div className="md:w-1/2">
+          <h1 className="text-2xl font-semibold text-gray-800 mb-2">{product.title}</h1>
+          <p className="text-lg text-gray-700 mb-2">₹{product.price}</p>
+          <p className="text-gray-600 text-sm mb-4">{product.description}</p>
+          <p className="text-gray-500 text-sm mb-2">Category: {product.category}</p>
+          <p className="text-sm text-gray-500 mb-2">In Stock: {product.stock}</p>
+          <p className="text-sm text-gray-500 mb-4">Shipping: {product.shippingInformation || 'Ships in 3–5 days'}</p>
+
+          <div className="flex gap-4 mb-6">
+            <button
+              onClick={() => addToCart(product)}
+              className="px-4 py-2 border border-gray-300 text-sm text-gray-700 rounded hover:bg-gray-50 transition"
+            >
+              Add to Cart
+            </button>
+            <button
+              onClick={() => handleBuyNow(product)}
+              className="px-4 py-2 bg-gray-900 text-white text-sm rounded hover:bg-black transition"
+            >
+              Buy Now
+            </button>
+          </div>
+
+          {/* Reviews */}
+          {product.reviews && product.reviews.length > 0 && (
+            <div className="mt-6">
+              <h3 className="text-md font-semibold text-gray-800 mb-2">Customer Reviews</h3>
+              <div className="space-y-4">
+                {product.reviews.map((review, index) => (
+                  <div key={index} className="p-3 border border-gray-100 rounded bg-gray-50">
+                    <p className="text-sm text-gray-700 mb-1">“{review.comment}”</p>
+                    <p className="text-xs text-gray-500">— {review.reviewerName}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-export default ProductDetails
+export default ProductDetails;

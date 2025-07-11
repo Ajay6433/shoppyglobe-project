@@ -1,33 +1,53 @@
-import React from 'react'
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
-import { useSelector } from 'react-redux'
 
 function Cart() {
-    const cartItems = useSelector((state) => state.cart.items);
-    console.log("Cart Items:", cartItems);
-  return (
-    <div>
-        <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Shopping Cart</h1>
-        {cartItems.length === 0 ? (
-            <div className="text-center text-gray-500 text-lg">Your cart is empty.</div>
-        ) : (
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                {cartItems.map(item => (
-                    <CartItem key={item.id} item={item} />
-                ))}
-                <li className="col-span-2 text-center text-gray-600">
-                    <img src="/cart.png" alt="Cart" className="mx-auto w-24 h-24 mb-4" />
-                    <p className="text-lg font-semibold">You have {cartItems.length} items in your cart.</p>
-                </li>
-                <li className="col-span-2 text-right text-lg font-semibold">
-                    Total: ${cartItems.reduce((total, item) => total + item.price * item
-.quantity, 0).toFixed(2)}
-                </li>
+  const cartItems = useSelector((state) => state.cart.items);
 
-            </ul>
-        )}
+  const totalAmount = useMemo(() => {
+    return cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+  }, [cartItems]);
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-10">
+      <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Shopping Cart</h1>
+
+      {cartItems.length === 0 ? (
+        <div className="text-center text-gray-500">
+          <img src="/emptyCart.png" alt="Empty Cart" className="w-28 h-28 mx-auto mb-4" />
+          <p className="text-lg mb-3">Your cart is empty.</p>
+          <Link
+            to="/"
+            className="inline-block px-5 py-2 border border-gray-300 text-sm text-gray-700 rounded hover:bg-gray-50 transition"
+          >
+            Browse Products
+          </Link>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <ul className="space-y-4">
+            {cartItems.map((item) => (
+              <CartItem key={item.id} item={item} />
+            ))}
+          </ul>
+
+          <div className="border-t pt-6 text-right">
+            <p className="text-gray-600 text-sm mb-2">
+              You have <strong>{cartItems.length}</strong> {cartItems.length === 1 ? 'item' : 'items'} in your cart.
+            </p>
+            <p className="text-lg font-semibold text-gray-800">
+              Total: ₹{totalAmount.toFixed(2)}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }
 
-export default Cart
+export default Cart;

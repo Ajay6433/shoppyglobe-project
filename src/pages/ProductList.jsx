@@ -7,7 +7,6 @@ function ProductList() {
   const { products, loading, error } = useProductsData();
   const [productsData, setProductsData] = useState([]);
 
-  // Sync products into productsData once fetched
   useEffect(() => {
     if (products && products.length > 0) {
       setProductsData(products);
@@ -16,7 +15,7 @@ function ProductList() {
 
   const handleSearch = (searchQuery) => {
     if (!searchQuery) {
-      setProductsData(products); // reset
+      setProductsData(products);
     } else {
       const filtered = products.filter(item =>
         item.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -26,32 +25,49 @@ function ProductList() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <input
-        type="text"
-        onChange={(e) => handleSearch(e.target.value)}
-        placeholder="Search for product here"
-        className="mb-6 w-full p-2 border border-gray-300 rounded"
-      />
-      
+    <div className="max-w-screen-xl mx-auto px-4 py-8">
+      {/* Search Input */}
+      <div className="mb-6">
+        <input
+          type="text"
+          onChange={(e) => handleSearch(e.target.value)}
+          placeholder="Search for products..."
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* Loading Spinner */}
       {loading && <Spinner />}
 
+      {/* Error Message */}
       {error && (
-        <div className="text-center text-red-500 text-lg">
-          <img src='/noData.jpg' alt="No Data" className="mx-auto mb-4 w-84 h-84" />
-          <p className="font-semibold text-xl mt-2">Failed to fetch products</p>
+        <div className="text-center text-red-600">
+          <img
+            src="/noData.jpg"
+            alt="No Data"
+            className="mx-auto mb-4 w-64 h-auto"
+          />
+          <p className="text-lg font-medium">Failed to fetch products. Please try again.</p>
         </div>
       )}
 
-      {!loading && !error && (
+      {/* Product Grid */}
+      {!loading && !error && productsData.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {productsData.map(product => (
+          {productsData.map((product) => (
             <ProductItem
               key={product.id}
               product={product}
-              className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200 p-4"
+              className="bg-white rounded-lg shadow-sm hover:shadow-md transition duration-200 p-4"
             />
           ))}
+        </div>
+      )}
+
+      {/* No Products Found (after search) */}
+      {!loading && !error && productsData.length === 0 && (
+        <div className="text-center mt-10 text-gray-600 text-lg">
+          <p>No products found matching your search.</p>
         </div>
       )}
     </div>
