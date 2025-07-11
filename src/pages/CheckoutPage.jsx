@@ -1,8 +1,8 @@
-// src/pages/CheckoutPage.jsx
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {clearCart} from '../store/cartSlice';
+import { clearCart } from '../store/cartSlice';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
@@ -10,6 +10,7 @@ const CheckoutPage = () => {
 
   const cartItems = useSelector((state) => state.cart.items);
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const INR_RATE = 83;
 
   const [shippingInfo, setShippingInfo] = useState({
     name: '',
@@ -23,77 +24,84 @@ const CheckoutPage = () => {
 
   const handlePlaceOrder = () => {
     if (!shippingInfo.name || !shippingInfo.address || !shippingInfo.phone) {
-      alert('Please fill in all shipping fields.');
+      toast.error('Please fill in all shipping fields.');
       return;
     }
-
 
     dispatch(clearCart());
     navigate('/order-success', {
       state: {
         cartItems,
         shippingInfo,
-        total,
+        total: (total * INR_RATE).toFixed(2),
       },
     });
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: 'auto', padding: '20px' }}>
-      <h2>Checkout</h2>
+    <div className="max-w-3xl mx-auto px-4 py-10">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Checkout</h2>
 
-      {/* Shipping Details */}
-      <div style={{ marginBottom: '30px' }}>
-        <h3>Shipping Details</h3>
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={shippingInfo.name}
-          onChange={handleChange}
-          style={{ display: 'block', marginBottom: 10, width: '100%' }}
-        />
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          value={shippingInfo.address}
-          onChange={handleChange}
-          style={{ display: 'block', marginBottom: 10, width: '100%' }}
-        />
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone Number"
-          value={shippingInfo.phone}
-          onChange={handleChange}
-          style={{ display: 'block', marginBottom: 10, width: '100%' }}
-        />
+      {/* Shipping Form */}
+      <div className="mb-8">
+        <h3 className="text-lg font-medium text-gray-700 mb-4">Shipping Details</h3>
+        <div className="space-y-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            value={shippingInfo.name}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+          <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={shippingInfo.address}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+          <input
+            type="text"
+            name="phone"
+            placeholder="Phone Number"
+            value={shippingInfo.phone}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+        </div>
       </div>
 
       {/* Cart Summary */}
-      <div style={{ marginBottom: '30px' }}>
-        <h3>Cart Summary</h3>
+      <div className="mb-8">
+        <h3 className="text-lg font-medium text-gray-700 mb-4">Cart Summary</h3>
         {cartItems.length === 0 ? (
-          <p>Your cart is empty.</p>
+          <p className="text-gray-500">Your cart is empty.</p>
         ) : (
-          <ul style={{ paddingLeft: 0 }}>
+          <ul className="space-y-2 text-sm text-gray-700">
             {cartItems.map((item) => (
-              <li key={item.id} style={{ listStyle: 'none', marginBottom: 10 }}>
-                <div>
-                  <strong>{item.name}</strong> × {item.quantity} = ₹{item.price * item.quantity}
-                </div>
+              <li key={item.id} className="flex justify-between">
+                <span>{item.title} × {item.quantity}</span>
+                <span>₹{(item.price * item.quantity * INR_RATE).toFixed(2)}</span>
               </li>
             ))}
+            <li className="pt-3 border-t text-right font-semibold text-gray-800">
+              Total Amount: ₹{(total * INR_RATE).toFixed(2)}
+            </li>
           </ul>
         )}
-        <p><strong>Total Amount: ₹{total}</strong></p>
       </div>
 
-      {/* Place Order Button */}
-      <button onClick={handlePlaceOrder} style={{ padding: '10px 20px', fontSize: 16 }}>
-        Place Order
-      </button>
+      {/* Place Order */}
+      <div className="text-center">
+        <button
+          onClick={handlePlaceOrder}
+          className="px-6 py-2 text-sm bg-gray-900 text-white rounded hover:bg-black transition"
+        >
+          Place Order
+        </button>
+      </div>
     </div>
   );
 };

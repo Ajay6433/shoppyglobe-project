@@ -28,7 +28,7 @@ function CartItem({ item }) {
         />
         <div>
           <h3 className="text-base font-medium text-gray-800 truncate">{item.title}</h3>
-          <p className="text-sm text-gray-600">₹{item.price.toFixed(2)}</p>
+          <p className="text-sm text-gray-600">₹{(item.price * 83).toFixed(2)}</p>
         </div>
       </div>
 

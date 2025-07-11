@@ -34,7 +34,7 @@ function ProductItem({ product, loading, error }) {
         />
         <h2 className="text-base font-medium text-gray-800 mb-1 truncate">{product.title}</h2>
         <p className="text-sm text-gray-500 mb-2 line-clamp-2">{product.description}</p>
-        <p className="text-sm font-semibold text-gray-700 mb-3">₹{product.price}</p>
+  ₹{(product.price * 83).toFixed(2)}
       </Link>
 
       <button

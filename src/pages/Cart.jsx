@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart.items);
+  const navigate = useNavigate();
 
   const totalAmount = useMemo(() => {
     return cartItems.reduce(
@@ -14,7 +16,7 @@ function Cart() {
   }, [cartItems]);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
+    <div className="max-w-4xl mx-auto px-4 py-10 mt-8">
       <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Shopping Cart</h1>
 
       {cartItems.length === 0 ? (
@@ -41,9 +43,15 @@ function Cart() {
               You have <strong>{cartItems.length}</strong> {cartItems.length === 1 ? 'item' : 'items'} in your cart.
             </p>
             <p className="text-lg font-semibold text-gray-800">
-              Total: ₹{totalAmount.toFixed(2)}
+  ₹{(totalAmount * 83).toFixed(2)}
             </p>
           </div>
+          <button
+        onClick={() => navigate('/checkout')}
+        className="inline-block px-5 py-2 border border-gray-300 text-sm text-gray-700 rounded hover:bg-gray-50 transition"
+      >
+        Proceed to Checkout
+      </button>
         </div>
       )}
     </div>

@@ -25,7 +25,7 @@ function ProductList() {
   };
 
   return (
-    <div className="max-w-screen-xl mx-auto px-4 py-8">
+    <div className="max-w-screen-xl mx-auto px-4 py-8 mt-8">
       {/* Search Input */}
       <div className="mb-6">
         <input

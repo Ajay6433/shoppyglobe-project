@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function Header() {
   return (
-    <header className="bg-white border-b shadow-sm">
+    <header className="fixed top-0 w-full z-50 bg-white border-b shadow-sm">
       <div className="container mx-auto flex justify-between items-center px-4 py-3">
         <h1 className="text-xl font-semibold text-gray-800">
           <Link to="/">ShoppyGlobe</Link>
