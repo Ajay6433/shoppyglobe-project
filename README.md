@@ -3,6 +3,7 @@
 ShoppyGlobe is a fully responsive e-commerce frontend project built using **React** and **Redux**. Users can browse products, add items to the cart, manage quantities, and place orders. The project simulates a real-world shopping experience using dummy JSON API data.
 
 Live Demo - https://shoppy-globe-ten-iota.vercel.app/   
+Github Repo URL - https://github.com/Ajay6433/shoppyglobe-project
 
 ---
 
@@ -78,7 +79,7 @@ Fully responsive for mobile screens
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/shoppyglobe.git
+git clone https://github.com/Ajay6433/shoppyglobe-project.git
 cd shoppyglobe-project
 ```
 
