@@ -7,10 +7,12 @@ function Cart() {
   const cartItems = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
 
+  //Performing items count
   const itemsCount = useMemo(() => {
     return cartItems.reduce((count, item) => count + item.quantity, 0);
   }, [cartItems]);
 
+  //Performing calculation for the total amount
   const totalAmount = useMemo(() => {
     return cartItems.reduce(
       (total, item) => total + item.price * item.quantity,
@@ -22,6 +24,7 @@ function Cart() {
     <div className="max-w-4xl mx-auto px-4 py-10 mt-8">
       <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Shopping Cart</h1>
 
+      {/* Error handling when cart is empty using ternary operator */}
       {cartItems.length === 0 ? (
         <div className="text-center text-gray-500">
           <img src="/emptyCart.png" alt="Empty Cart" className="w-28 h-28 mx-auto mb-4" />

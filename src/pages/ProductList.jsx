@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import useProductsData from '../hooks/useProductsData';
 import ProductItem from '../components/ProductItem';
 import Spinner from '../components/Spinner';
 
 function ProductList() {
+  //destructuring the data and states from custom hook
   const { products, loading, error } = useProductsData();
   const [productsData, setProductsData] = useState([]);
   const [sortOption, setSortOption] = useState("none");
 
-
+  //Setting products is available
   useEffect(() => {
     if (products && products.length > 0) {
       setProductsData(products);
     }
   }, [products]);
 
+  //function for handing the search query
   const handleSearch = (searchQuery) => {
     if (!searchQuery) {
       setProductsData(products);
@@ -26,21 +28,20 @@ function ProductList() {
     }
   };
 
+  //function to implement the filtering logic based on the selected option's value
   useEffect(() => {
-  if (!products) return;
+    if (!products) return;
+    let sorted = [...products];
 
-  let sorted = [...products];
-
-  if (sortOption === 'lowToHigh') {
-    sorted.sort((a, b) => a.price - b.price);
-  } else if (sortOption === 'highToLow') {
-    sorted.sort((a, b) => b.price - a.price);
-  } else if (sortOption === 'topRated') {
-    sorted.sort((a, b) => b.rating - a.rating);
-  }
-
-  setProductsData(sorted);
-}, [sortOption, products]);
+    if (sortOption === 'lowToHigh') {
+      sorted.sort((a, b) => a.price - b.price);
+    } else if (sortOption === 'highToLow') {
+      sorted.sort((a, b) => b.price - a.price);
+    } else if (sortOption === 'topRated') {
+      sorted.sort((a, b) => b.rating - a.rating);
+    }
+    setProductsData(sorted);
+  }, [sortOption, products]);
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 py-8 mt-8">
@@ -53,6 +54,7 @@ function ProductList() {
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
+      {/* SortBy field */}
       <div className="mb-6 flex justify-end">
         <select
           value={sortOption}
@@ -80,10 +82,7 @@ function ProductList() {
           <p className="text-lg font-medium">Failed to fetch products. Please try again.</p>
         </div>
       )}
-
       
-
-
       {/* Product Grid */}
       {!loading && !error && productsData.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

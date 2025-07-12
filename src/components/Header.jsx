@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 function Header() {
   const cartItems = useSelector((state) => state.cart.items);
 
+  //function for counting the items to be displayed along the cart icon
   const itemsCount = useMemo(() => {
     return cartItems.reduce((count, item) => count + item.quantity, 0);
   }, [cartItems]);

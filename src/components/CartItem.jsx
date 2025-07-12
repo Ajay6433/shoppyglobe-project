@@ -1,14 +1,15 @@
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { removeItem, updateQuantity } from '../store/cartSlice';
 
 function CartItem({ item }) {
   const dispatch = useDispatch();
 
+  //Function to remove the item from the cart
   const removeFromCart = (itemId) => {
     dispatch(removeItem(itemId));
   };
 
+  //Function to handle the quantity of the item in the cart
   const handleUpdateQuantity = (itemId, quantity) => {
     if (quantity < 1) {
       removeFromCart(itemId);
@@ -19,7 +20,7 @@ function CartItem({ item }) {
 
   return (
     <div className="bg-white border rounded-md shadow-sm p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-      {/* Image + Info */}
+      {/* Product image and details*/}
       <div className="flex items-center gap-4">
         <img
           src={item.thumbnail}
@@ -32,7 +33,7 @@ function CartItem({ item }) {
         </div>
       </div>
 
-      {/* Controls */}
+      {/* Product Controls */}
       <div className="flex items-center gap-3">
         <button
           onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}

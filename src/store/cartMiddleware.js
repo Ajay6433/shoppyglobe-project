@@ -1,29 +1,24 @@
 import { cartSlice } from './cartSlice';
 
-// List of cart-related actions we want to watch for.
-// Example: If you have a shopping cart, these actions could be "add item", "remove item", or "set cart".
+// List of cart actions to watch for
 const CART_ACTIONS = [
-    cartSlice.actions.addItem.type,    // e.g., User adds a product to their cart
-    cartSlice.actions.removeItem.type, // e.g., User removes a product from their cart
-    cartSlice.actions.setCart.type,    // e.g., Cart is loaded from server or reset
+  cartSlice.actions.addItem.type,    // When user adds a product
+  cartSlice.actions.removeItem.type, // When user removes a product
+  cartSlice.actions.setCart.type,    // When cart is set or updated
 ];
 
-// Middleware to sync cart state to localStorage whenever cart changes.
-// Think of this as a security camera that records every time someone adds/removes items from a shopping cart.
+// This middleware runs every time an action is dispatched
 export const cartMiddleware = store => next => action => {
-    // Pass the action to the next middleware/reducer first
-    const result = next(action);
+  // Action continue to reducers
+  const result = next(action);
 
-    // If the action is related to the cart (add, remove, set)
-    if (CART_ACTIONS.includes(action.type)) {
-        // Get the latest cart items from the store
-        const items = store.getState().cart.items;
+  // Condition to check if the action is one of the cart actions
+  if (CART_ACTIONS.includes(action.type)) {
+    // Getting updated cart items from the store
+    const items = store.getState().cart.items;
 
-        // Save the cart items to localStorage so the cart persists if the user refreshes the page
-        // Real world example: Like saving your shopping cart so you don't lose it if you close the browser
-        localStorage.setItem('cart', JSON.stringify(items));
-    }
-
-    // Return the result of next(action) so the Redux flow continues
-    return result;
+    // Saving the cart to localStorage
+    localStorage.setItem('cart', JSON.stringify(items));
+  }
+  return result;
 };

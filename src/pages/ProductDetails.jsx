@@ -7,6 +7,7 @@ import { addItem } from '../store/cartSlice';
 import toast from 'react-hot-toast';
 
 function ProductDetails() {
+  //Destructuring the id from the parameter 
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,6 +15,7 @@ function ProductDetails() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  //Fetching single product from the API based on its id
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -30,17 +32,19 @@ function ProductDetails() {
     fetchProduct();
   }, [id]);
 
+  //Function to add product to the cart
   const addToCart = (product) => {
     toast.success(`${product.title} added to cart`);
     dispatch(addItem(product));
   };
-
+  //Function to handle the buy now functionality
   const handleBuyNow = (product) => {
     toast.success(`Redirecting to checkout for ${product.title}`);
     dispatch(addItem(product));
     navigate('/checkout');
   };
 
+  //Dynamic error handling
   if (loading) return <Spinner />;
   if (error) return <div className="text-center text-red-500 py-6">Error: {error.message}</div>;
   if (!product) return <div className="text-center text-gray-600 py-6">Product not found.</div>;
@@ -60,6 +64,7 @@ function ProductDetails() {
         {/* Product Info */}
         <div className="md:w-1/2">
           <h1 className="text-2xl font-semibold text-gray-800 mb-2">{product.title}</h1>
+          {/* converting the price to INR  */}
           ₹{(product.price * 83).toFixed(2)}
           <p className="text-gray-600 text-sm mb-4">{product.description}</p>
           <p className="text-gray-500 text-sm mb-2">Category: {product.category}</p>

@@ -11,12 +11,13 @@ function useProductsData() {
                 setLoading(true);
                 setError(null); // Reseting error state before fetching
                 const response = await axios.get("https://dummyjson.com/products");
-                console.log(response.data.products);
+                //Setting error in case the error occurs
                 if (response.status !== 200) {
                     setError(
                         `Error: ${response.status} - ${response.statusText}`
                     )
                 }
+                //Setting products response data
                 setProducts(response.data.products);
 
             } catch (err) {
@@ -34,6 +35,7 @@ function useProductsData() {
         fetchProducts();
     }, []);
 
+    //Returning the data and states
     return { products, loading, error };
 
 }

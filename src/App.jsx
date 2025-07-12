@@ -1,9 +1,10 @@
-import React, { lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Spinner from './components/Spinner';
 import RootLayout from './layout/RootLayout';
 import { Toaster } from 'react-hot-toast';
 
+//Loading the components using lazy loading provided by react for better UX
 const ProductList = lazy(() => import('./pages/ProductList'));
 const ProductDetails = lazy(() => import('./pages/ProductDetails'));
 const Cart = lazy(() => import('./pages/Cart'));
@@ -13,6 +14,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
   return (
+    //Routed the routes using React-router-dom
     <BrowserRouter>
       <Toaster />
       <Suspense fallback={<Spinner />}>

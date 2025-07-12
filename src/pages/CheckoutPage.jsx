@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearCart } from '../store/cartSlice';
 import { useNavigate } from 'react-router-dom';
@@ -8,8 +8,11 @@ const CheckoutPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  //Selecting the cart items
   const cartItems = useSelector((state) => state.cart.items);
+  //perfoming total items
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  //Static INR conversion rate to dollar, can be explicitely called from API
   const INR_RATE = 83;
 
   const [shippingInfo, setShippingInfo] = useState({
@@ -18,17 +21,21 @@ const CheckoutPage = () => {
     phone: '',
   });
 
+  //Function to handle the shipping information of the user
   const handleChange = (e) => {
     setShippingInfo({ ...shippingInfo, [e.target.name]: e.target.value });
   };
 
+  //Function to handle the place order functionality
   const handlePlaceOrder = () => {
     if (!shippingInfo.name || !shippingInfo.address || !shippingInfo.phone) {
       toast.error('Please fill in all shipping fields.');
       return;
     }
 
+    //Clearing cart once the order is placed
     dispatch(clearCart());
+    //Navigating to the order success page
     navigate('/order-success', {
       state: {
         cartItems,

@@ -2,7 +2,11 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 const OrderSuccess = () => {
+
+  // Accessing state passed via navigation (from CheckoutPage)
   const location = useLocation();
+
+  // Destructure order details from location.state
   const { cartItems, shippingInfo, total } = location.state || {};
 
   return (
