@@ -6,6 +6,8 @@ import Spinner from '../components/Spinner';
 function ProductList() {
   const { products, loading, error } = useProductsData();
   const [productsData, setProductsData] = useState([]);
+  const [sortOption, setSortOption] = useState("none");
+
 
   useEffect(() => {
     if (products && products.length > 0) {
@@ -23,6 +25,22 @@ function ProductList() {
       setProductsData(filtered);
     }
   };
+
+  useEffect(() => {
+  if (!products) return;
+
+  let sorted = [...products];
+
+  if (sortOption === 'lowToHigh') {
+    sorted.sort((a, b) => a.price - b.price);
+  } else if (sortOption === 'highToLow') {
+    sorted.sort((a, b) => b.price - a.price);
+  } else if (sortOption === 'topRated') {
+    sorted.sort((a, b) => b.rating - a.rating);
+  }
+
+  setProductsData(sorted);
+}, [sortOption, products]);
 
   return (
     <div className="max-w-screen-xl mx-auto px-4 py-8 mt-8">
@@ -50,6 +68,20 @@ function ProductList() {
           <p className="text-lg font-medium">Failed to fetch products. Please try again.</p>
         </div>
       )}
+
+      <div className="mb-6 flex justify-end">
+        <select
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="none">Sort by</option>
+          <option value="lowToHigh">Price: Low to High</option>
+          <option value="highToLow">Price: High to Low</option>
+          <option value="topRated">Top Rated</option>
+        </select>
+      </div>
+
 
       {/* Product Grid */}
       {!loading && !error && productsData.length > 0 && (

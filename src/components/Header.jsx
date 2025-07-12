@@ -1,7 +1,15 @@
 import { Link } from 'react-router-dom';
 import { FiShoppingCart } from 'react-icons/fi';
+import { useSelector } from 'react-redux';
+import { useMemo } from 'react';
 
 function Header() {
+  const cartItems = useSelector((state) => state.cart.items);
+
+  const itemsCount = useMemo(() => {
+    return cartItems.reduce((count, item) => count + item.quantity, 0);
+  }, [cartItems]);
+
   return (
     <header className="fixed top-0 w-full z-50 bg-white border-b shadow-sm">
       <div className="container mx-auto flex justify-between items-center px-4 py-3">
@@ -16,9 +24,21 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link to="/cart" className="flex items-center gap-1 hover:text-blue-600 transition-colors">
-                <FiShoppingCart className="text-lg" />
-                <span>Cart</span>
+              <Link
+                to="/cart"
+                className="relative flex items-center gap-1 hover:text-blue-600 transition-colors"
+              >
+                {/* Cart Icon */}
+                <FiShoppingCart className="text-xl" />
+
+                {/* Badge */}
+                {itemsCount > 0 && (
+                  <span className="absolute -top-2 -right-3 text-xs bg-red-500 text-white rounded-full px-1.5">
+                    {itemsCount}
+                  </span>
+                )}
+
+                <span className="ml-1">Cart</span>
               </Link>
             </li>
           </ul>

@@ -1,12 +1,15 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
+
+  const itemsCount = useMemo(() => {
+    return cartItems.reduce((count, item) => count + item.quantity, 0);
+  }, [cartItems]);
 
   const totalAmount = useMemo(() => {
     return cartItems.reduce(
@@ -40,18 +43,19 @@ function Cart() {
 
           <div className="border-t pt-6 text-right">
             <p className="text-gray-600 text-sm mb-2">
-              You have <strong>{cartItems.length}</strong> {cartItems.length === 1 ? 'item' : 'items'} in your cart.
+              You have <strong>{itemsCount}</strong> {itemsCount === 1 ? 'item' : 'items'} in your cart.
             </p>
             <p className="text-lg font-semibold text-gray-800">
-  ₹{(totalAmount * 83).toFixed(2)}
+              ₹{(totalAmount * 83).toFixed(2)}
             </p>
           </div>
+
           <button
-        onClick={() => navigate('/checkout')}
-        className="inline-block px-5 py-2 border border-gray-300 text-sm text-gray-700 rounded hover:bg-gray-50 transition"
-      >
-        Proceed to Checkout
-      </button>
+            onClick={() => navigate('/checkout')}
+            className="inline-block px-5 py-2 border border-gray-300 text-sm text-gray-700 rounded hover:bg-gray-50 transition"
+          >
+            Proceed to Checkout
+          </button>
         </div>
       )}
     </div>
