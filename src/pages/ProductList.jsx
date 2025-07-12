@@ -53,6 +53,18 @@ function ProductList() {
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
+      <div className="mb-6 flex justify-end">
+        <select
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="none">Sort by</option>
+          <option value="lowToHigh">Price: Low to High</option>
+          <option value="highToLow">Price: High to Low</option>
+          <option value="topRated">Top Rated</option>
+        </select>
+      </div>
 
       {/* Loading Spinner */}
       {loading && <Spinner />}
@@ -69,18 +81,7 @@ function ProductList() {
         </div>
       )}
 
-      <div className="mb-6 flex justify-end">
-        <select
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-          className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="none">Sort by</option>
-          <option value="lowToHigh">Price: Low to High</option>
-          <option value="highToLow">Price: High to Low</option>
-          <option value="topRated">Top Rated</option>
-        </select>
-      </div>
+      
 
 
       {/* Product Grid */}

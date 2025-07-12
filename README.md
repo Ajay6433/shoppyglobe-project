@@ -1,12 +1,86 @@
-# React + Vite
+# 🛍️ ShoppyGlobe - E-commerce Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+ShoppyGlobe is a fully responsive e-commerce frontend project built using **React** and **Redux**. Users can browse products, add items to the cart, manage quantities, and place orders. The project simulates a real-world shopping experience using dummy JSON API data.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📸 Screenshots
 
-## Expanding the ESLint configuration
+### 🏠 Homepage  
+Responsive product grid with search and filter functionality  
+![Homepage](./assets/Homepage.png)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 🛒 Cart  
+Displays added products, updates quantities, and shows total price in ₹  
+![Cart](./assets/Cart.png)
+
+### 📦 Product Details Page  
+Detailed view with description, rating, and purchase options  
+![Product Details](./assets/ProductDetailsPage.png)
+
+### ✅ Checkout Page  
+Form to collect shipping information and review order before placing it  
+![Checkout](./assets/CheckoutPage.png)
+
+### 💬 Error Handling  
+Handles fetch and page errors gracefully with visuals  
+![Error Handling](./assets/ErrorHandling.png)
+
+### 📱 Responsive Design  
+Fully responsive for mobile screens  
+- Homepage  
+  ![Responsive Homepage](./assets/ResponsiveHomepage.png)  
+- Cart  
+  ![Responsive Cart](./assets/ResponsiveCart.png)
+
+---
+
+## 🚀 Features
+
+- 🔎 **Search products** by title
+- 🎚️ **Sort products** by price and rating
+- 🛒 **Add to cart** and manage quantities
+- ✅ **Checkout** with shipping info
+- 🌐 **Responsive design** for mobile and desktop
+- ⚠️ Graceful **error handling**
+- 🌟 Minimal, clean **UI with Tailwind CSS**
+- 🔥 Toast notifications on actions
+
+---
+
+## 🧰 Tech Stack
+
+- **React** (functional components & hooks)
+- **Redux** (cart state management)
+- **Tailwind CSS** (utility-first styling)
+- **React Router** (client-side routing)
+- **react-hot-toast** (notifications)
+- **DummyJSON API** (mock product data)
+
+---
+
+## 📦 Folder Structure
+
+├── public/
+│ └── favicon.ico
+├── src/
+│ ├── assets/ # Screenshots, icons, static assets
+│ ├── components/ # Reusable components
+│ ├── hooks/ # Custom hooks (e.g., useProductsData)
+│ ├── pages/ # Page components (Cart, Checkout, etc.)
+│ ├── store/ # Redux slices
+│ └── App.jsx # Main app routing and layout
+
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/your-username/shoppyglobe.git
+cd shoppyglobe
+
+npm install
+
+npm start
